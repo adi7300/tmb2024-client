@@ -1,0 +1,31 @@
+.App {
+  text-align: center;
+}
+
+.instructions {
+  font-size: 20px;
+  direction: rtl;
+  text-align: right;
+}
+
+
+.App-header {
+  background: linear-gradient(#fefdfd, #446196);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: top;
+  font-size: calc(10px + 2vmin);
+  color: rgb(57, 57, 57);
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
