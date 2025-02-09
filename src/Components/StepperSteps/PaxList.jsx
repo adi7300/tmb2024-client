@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { DatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -23,7 +27,6 @@ import { observer } from 'mobx-react';
 import store from '../../store';
 import '../../App.css';
 
-
 export function PaxList() {
   return (
     <>
@@ -35,14 +38,27 @@ export function PaxList() {
 
 const AddNewPaxForm = () => {
   const [open, setOpen] = React.useState(false);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    contactPerson: false,
-    name: '',
-    phone: '',
-    email: '',
-    diet: 'none',
-    remarks: ''
+    contactPerson: store.newPax.contactPerson || false,
+    name: store.newPax.name || '',
+    phone: store.newPax.phone || '',
+    email: store.newPax.email || '',
+    diet: store.newPax.diet || 'none',
+    birthDate: store.newPax.birthDate || null,
+    remarks: store.newPax.remarks || '',
   });
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name || formData.name.trim() === '') {
+      newErrors.name = 'שם הוא שדה חובה';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // מחזיר true אם אין שגיאות
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -53,9 +69,17 @@ const AddNewPaxForm = () => {
     if (name === 'contactPerson') {
       setFormData((prevFormData) => ({ ...prevFormData, [name]: checked }));
     } else setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
   };
 
   const handleSubmit = () => {
+    if (!validateForm()) {
+      return;
+    }
+
     const uniqueID = `pax-${Math.random().toString(36).substring(7)}`;
     const newPax = { id: uniqueID, ...formData };
 
@@ -68,16 +92,20 @@ const AddNewPaxForm = () => {
       email: '',
       remarks: '',
       diet: 'none',
+      birthDate: null,
     });
 
+    setErrors({});
     onClose();
   };
 
   const onClose = () => {
     setOpen(false);
+    setErrors({});
   }
+
   return (
-    <>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Button
         sx={{
           color: '#cd5c5c',
@@ -111,6 +139,8 @@ const AddNewPaxForm = () => {
             margin="dense"
             variant="outlined"
             required
+            error={!!errors.name}
+            helperText={errors.name}
           />
           <TextField
             fullWidth
@@ -143,6 +173,47 @@ const AddNewPaxForm = () => {
             <MenuItem value='no-pork'>ללא חזיר</MenuItem>
             <MenuItem value='gluten-free'>רגישות לגלוטן</MenuItem>
           </Select>
+          <InputLabel id="birthDate">תאריך לידה</InputLabel>
+
+          <DatePicker
+            value={formData.birthDate}
+            onChange={(newValue) => {
+              setFormData(prev => ({ ...prev, birthDate: newValue }));
+            }}
+            format="DD/MM/YYYY"
+            minDate={dayjs('1950-01-01')}
+            maxDate={dayjs('2025-12-31')}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                margin: "dense",
+                dir: "rtl",
+                sx: {
+                  '& .MuiInputAdornment-root': {
+                    position: 'absolute',
+                    right: '8px',
+                    height: '100%',
+                    maxHeight: 'none',
+                    top: 0,
+                    marginTop: 0
+                  },
+                  '& .MuiOutlinedInput-root': {
+                    paddingRight: '36px',
+                    '& input': {
+                      textAlign: 'right'
+                    }
+                  },
+                  '& .MuiInputLabel-root': {
+                    right: '36px',
+                    left: 'unset',
+                    transformOrigin: 'right'
+                  }
+                }
+              }
+            }}
+            views={['year', 'month', 'day']}
+            openTo="year"
+          />
           <TextField
             inputProps={{ style: { textAlign: 'right' } }}
             fullWidth
@@ -163,8 +234,8 @@ const AddNewPaxForm = () => {
             color="primary"
           >הוספה</Button>
         </DialogActions>
-      </Dialog >
-    </>
+      </Dialog>
+    </LocalizationProvider>
   );
 };
 
@@ -185,6 +256,7 @@ function PaxDetailsList() {
           <TableRow >
             <TableCell align="right"></TableCell>
             <TableCell style={{ fontWeight: 'bold' }} align="right">הערות</TableCell>
+            <TableCell style={{ fontWeight: 'bold' }} align="right">תאריך לידה</TableCell>
             <TableCell style={{ fontWeight: 'bold' }} align="right">העדפות אוכל</TableCell>
             <TableCell style={{ fontWeight: 'bold' }} align="right">אימייל</TableCell>
             <TableCell style={{ fontWeight: 'bold' }} align="right">מספר טלפון</TableCell>
@@ -207,6 +279,9 @@ function PaxDetailsList() {
                 </Button>
               </TableCell>
               <TableCell align="right">{row.remarks}</TableCell>
+              <TableCell align="right">
+                {row.birthDate ? dayjs(row.birthDate).format('DD/MM/YYYY') : ''}
+              </TableCell>
               <TableCell align="right">{row.diet}</TableCell>
               <TableCell align="right">{row.email}</TableCell>
               <TableCell align="right">{row.phone}</TableCell>

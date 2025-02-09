@@ -11,9 +11,9 @@ import store from '../../store';
 
 export function TourLeader() {
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
+        name: store.tourLeader.name || '',
+        email: store.tourLeader.email || '',
+        phone: store.tourLeader.phone || '',
     });
 
     const handleInputChange = (event) => {
@@ -50,7 +50,7 @@ export function TourLeader() {
                 <TextField
                     id="full-name"
                     required
-                    label="שם מלא של ממלא הטופס (בעברית)"
+                    label="שם מלא בעברית של ממלא הטופס "
                     value={formData.name}
                     name="name"
                     variant="outlined"

@@ -28,6 +28,10 @@ const StepperPage = observer(() => {
     const navigate = useNavigate();
     const [activeStep, setActiveStep] = React.useState(0);
 
+    React.useEffect(() => {
+        store.loadPersistedData();
+    }, []);
+
     const handleNext = () => {
         setActiveStep((prevActiveStep) => {
             if (prevActiveStep < 4) {

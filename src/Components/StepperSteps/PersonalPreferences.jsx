@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import dayjs from 'dayjs';
 import {
     TextField,
     MenuItem,
@@ -18,12 +19,13 @@ import '../../App.css';
 
 export function PersonalPreferences() {
     const [formData, setFormData] = useState({
-        roomType: 'dormitory',
-        bedType: '',
-        flightBooked: false,
-        startingDate: '',
-        endingDate: '',
-        level: '',
+        roomType: store.groupPreferences.roomType || 'dormitory',
+        bedType: store.groupPreferences.bedType || '',
+        flightBooked: store.groupPreferences.flightBooked || false,
+        startingDate: store.groupPreferences.startingDate || '',
+        endingDate: store.groupPreferences.endingDate || '',
+        level: store.groupPreferences.level || '',
+        remarks: store.groupPreferences.remarks || ''
     });
 
     const handleInputChange = (event) => {
@@ -35,12 +37,16 @@ export function PersonalPreferences() {
     };
 
     const setStartingDate = (newValue) => {
-        setFormData((prevFormData) => ({ ...prevFormData, startingDate: newValue.$d }));
-    }
+        // Ensure we're setting the date at noon to avoid timezone issues
+        const date = newValue ? newValue.hour(12).minute(0).second(0).millisecond(0) : null;
+        setFormData((prevFormData) => ({ ...prevFormData, startingDate: date }));
+    };
 
     const setEndingDate = (newValue) => {
-        setFormData((prevFormData) => ({ ...prevFormData, endingDate: newValue.$d }));
-    }
+        // Ensure we're setting the date at noon to avoid timezone issues
+        const date = newValue ? newValue.hour(12).minute(0).second(0).millisecond(0) : null;
+        setFormData((prevFormData) => ({ ...prevFormData, endingDate: date }));
+    };
 
     const handleSubmit = () => {
         store.setPersonalPreferencesDetails(formData)
@@ -63,6 +69,7 @@ export function PersonalPreferences() {
                             format='DD/MM/YYYY'
                             label="תאריך התחלה"
                             name="startingDate"
+                            minDate={dayjs('2025-06-01')}
                             onChange={(newValue) => setStartingDate(newValue)}
                             sx={{
                                 marginTop: '12px',
@@ -77,6 +84,7 @@ export function PersonalPreferences() {
                     <DemoContainer components={['DatePicker']}>
                         <DatePicker
                             format='DD/MM/YYYY'
+                            minDate={dayjs('2025-06-01')}
                             label="תאריך סיום"
                             name="endingDate"
                             onChange={(newValue) => setEndingDate(newValue)}
@@ -101,8 +109,8 @@ export function PersonalPreferences() {
                         style={{ display: 'flex', direction: 'rtl', color: '#4b4f58' }}
                     >
                         <MenuItem value="dormitory">דורמיטורי (חדרים משותפים)</MenuItem>
-                        <MenuItem value="private-only">חדרים פרטיים בלבד</MenuItem>
                         <MenuItem value="private-and-dormitory">שילוב של דורמיטורי וחדרים פרטיים</MenuItem>
+                        <MenuItem value="private-only">חדרים פרטיים בלבד</MenuItem>
                     </Select>
                 </FormControl>
                 {(formData.roomType !== 'dormitory') && <FormControl fullWidth sx={{ marginTop: '12px', width: '350px' }}>
@@ -132,9 +140,9 @@ export function PersonalPreferences() {
                         margin="dense"
                         style={{ display: 'flex', direction: 'rtl', color: '#4b4f58' }}
                     >
-                        <MenuItem value="Level-1">Level 1 - 110€ - 150€ לאדם ללילה</MenuItem>
-                        <MenuItem value="Level-2">Level 2 - 70€ - 110€ לאדם ללילה</MenuItem>
-                        <MenuItem value="Level-3">Level 3 - 45€ - 70€ לאדם ללילה</MenuItem>
+                        <MenuItem value="Level-1">Level 1 - 130€ - 170€ לאדם ללילה</MenuItem>
+                        <MenuItem value="Level-2">Level 2 - 95€ - 130€ לאדם ללילה</MenuItem>
+                        <MenuItem value="Level-3">Level 3 - 60€ - 95€ לאדם ללילה</MenuItem>
                     </Select>
                 </FormControl>
                 <TextField
