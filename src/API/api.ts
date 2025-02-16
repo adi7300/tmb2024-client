@@ -5,7 +5,7 @@ export namespace FormApi {
     export const submitForm = () => {
         axios({
             method: 'POST',
-            url: 'https://server-nche.vercel.app/api/submitForm', // for production only
+            url: 'https://server-two-teal.vercel.app/api/submitForm', // for production only
             // url: 'http://localhost:8080/api/submitForm', // for debugging only
             data: {
                 tourLeader: store.tourLeader,
