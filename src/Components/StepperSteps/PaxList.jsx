@@ -178,7 +178,8 @@ const AddNewPaxForm = () => {
           <DatePicker
             value={formData.birthDate}
             onChange={(newValue) => {
-              setFormData(prev => ({ ...prev, birthDate: newValue }));
+              const date = newValue ? newValue.hour(12).minute(0).second(0).millisecond(0) : null;
+              setFormData(prev => ({ ...prev, birthDate: date }));
             }}
             format="DD/MM/YYYY"
             minDate={dayjs('1950-01-01')}
