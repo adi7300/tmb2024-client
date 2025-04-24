@@ -10,8 +10,8 @@ export type TPax = {
 
 export type TPersonalPreferences = {
     flightBooked: boolean;
-    startingDate: string;
-    endingDate: string;
+    startingDate: Date;
+    endingDate: Date;
     roomType: string;
     bedType: string;
     level: string;

@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { arrayMove } from "@dnd-kit/sortable";
-import dayjs from 'dayjs';
+import dayjs from './config/dayjs';
 
 // Types
 export type TPax = {
@@ -16,6 +16,8 @@ export type TPax = {
 
 export type TPersonalPreferences = {
     flightBooked: boolean;
+    departureFlightNo: string;
+    returnFlightNo: string;
     startingDate: string | dayjs.Dayjs;
     endingDate: string | dayjs.Dayjs;
     roomType: string;
@@ -67,6 +69,8 @@ class Store {
     private getInitialPreferencesState(): TPersonalPreferences {
         return {
             flightBooked: false,
+            departureFlightNo: '',
+            returnFlightNo: '',
             startingDate: '',
             endingDate: '',
             roomType: 'dormitory',

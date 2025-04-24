@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import dayjs from 'dayjs';
+import dayjs from '../../config/dayjs';
 import {
     TextField,
     MenuItem,
@@ -9,6 +9,7 @@ import {
     Checkbox,
     FormControlLabel,
     Button,
+    Box,
 } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -22,6 +23,8 @@ export function PersonalPreferences() {
         roomType: store.groupPreferences.roomType || 'dormitory',
         bedType: store.groupPreferences.bedType || '',
         flightBooked: store.groupPreferences.flightBooked || false,
+        departureFlightNo: store.groupPreferences.departureFlightNo || '',
+        returnFlightNo: store.groupPreferences.returnFlightNo || '',
         startingDate: store.groupPreferences.startingDate || '',
         endingDate: store.groupPreferences.endingDate || '',
         level: store.groupPreferences.level || '',
@@ -63,6 +66,31 @@ export function PersonalPreferences() {
                     onChange={handleInputChange}
                     sx={{ display: 'flex', direction: 'ltr' }}
                 />
+                {formData.flightBooked && (
+                    <Box sx={{ display: 'flex', gap: 2, marginTop: '12px' }}>
+                        <TextField
+                            fullWidth
+                            label="מספר טיסת חזרה"
+                            name="returnFlightNo"
+                            value={formData.returnFlightNo}
+                            onChange={handleInputChange}
+                            margin="dense"
+                            // helperText="מספר טיסת החזרה"
+                            sx={{ width: '168px' }}
+                        />
+                        <TextField
+                            fullWidth
+                            label="מספר טיסת יציאה"
+                            name="departureFlightNo"
+                            value={formData.departureFlightNo}
+                            onChange={handleInputChange}
+                            margin="dense"
+                            // helperText="מספר טיסת היציאה"
+                            sx={{ width: '168px' }}
+                        />
+
+                    </Box>
+                )}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DatePicker']}>
                         <DatePicker
