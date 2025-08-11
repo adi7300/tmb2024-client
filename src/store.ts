@@ -45,6 +45,8 @@ class Store {
     newAccPreference: TPreferredAccommodation = this.getInitialAccommodationState();
     preferredAccommodationList: TPreferredAccommodation[] = [];
     generalComments: string = '';
+    bookingEmail: string = '';
+    termsAccepted: boolean = false;
     editingAccommodation: TPreferredAccommodation | null = null;
 
     constructor() {
@@ -99,7 +101,8 @@ class Store {
             paxList: this.paxList,
             groupPreferences: this.groupPreferences,
             preferredAccommodationList: this.preferredAccommodationList,
-            generalComments: this.generalComments
+            generalComments: this.generalComments,
+            bookingEmail: this.bookingEmail,
         };
         try {
             localStorage.setItem('formData', JSON.stringify(dataToStore));
@@ -119,6 +122,8 @@ class Store {
                     this.groupPreferences = parsedData.groupPreferences || this.getInitialPreferencesState();
                     this.preferredAccommodationList = parsedData.preferredAccommodationList || [];
                     this.generalComments = parsedData.generalComments || '';
+                    this.bookingEmail = parsedData.bookingEmail || '';
+
                 });
             }
         } catch (error) {
@@ -226,6 +231,22 @@ class Store {
         });
     };
 
+    // Booking Email Methods
+    setBookingEmail = (email: string) => {
+        runInAction(() => {
+            this.bookingEmail = email;
+            this.persistData();
+        });
+    };
+
+    // Terms Accepted Methods
+    setTermsAccepted = (accepted: boolean) => {
+        runInAction(() => {
+            this.termsAccepted = accepted;
+            this.persistData();
+        });
+    };
+
     // Reset Methods
     resetStore = () => {
         runInAction(() => {
@@ -236,6 +257,8 @@ class Store {
             this.newAccPreference = this.getInitialAccommodationState();
             this.preferredAccommodationList = [];
             this.generalComments = '';
+            this.bookingEmail = '';
+            this.termsAccepted = false;
             this.editingAccommodation = null;
             localStorage.removeItem('formData');
         });

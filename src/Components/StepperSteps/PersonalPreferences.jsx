@@ -28,7 +28,8 @@ export function PersonalPreferences() {
         startingDate: store.groupPreferences.startingDate || '',
         endingDate: store.groupPreferences.endingDate || '',
         level: store.groupPreferences.level || '',
-        remarks: store.groupPreferences.remarks || ''
+        remarks: store.groupPreferences.remarks || '',
+        bookingEmail: store.bookingEmail || ''
     });
 
     const handleInputChange = (event) => {
@@ -36,7 +37,14 @@ export function PersonalPreferences() {
 
         if (name === 'flightBooked') {
             setFormData((prevFormData) => ({ ...prevFormData, [name]: checked }));
-        } else setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+        } else {
+            setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+
+            // Update store for bookingEmail immediately
+            if (name === 'bookingEmail') {
+                store.setBookingEmail(value);
+            }
+        }
     };
 
     const setStartingDate = (newValue) => {
@@ -68,27 +76,53 @@ export function PersonalPreferences() {
                 />
                 {formData.flightBooked && (
                     <Box sx={{ display: 'flex', gap: 2, marginTop: '12px' }}>
+
                         <TextField
                             fullWidth
-                            label="מספר טיסת חזרה"
-                            name="returnFlightNo"
-                            value={formData.returnFlightNo}
-                            onChange={handleInputChange}
-                            margin="dense"
-                            // helperText="מספר טיסת החזרה"
-                            sx={{ width: '168px' }}
-                        />
-                        <TextField
-                            fullWidth
-                            label="מספר טיסת יציאה"
+                            label="מספר טיסת הלוך"
                             name="departureFlightNo"
                             value={formData.departureFlightNo}
                             onChange={handleInputChange}
                             margin="dense"
-                            // helperText="מספר טיסת היציאה"
-                            sx={{ width: '168px' }}
-                        />
-
+                            sx={{
+                                width: '168px',
+                                '& .MuiOutlinedInput-root': {
+                                    direction: 'ltr',
+                                    borderRadius: '4px'
+                                },
+                                '& .MuiInputLabel-root': {
+                                    right: '24px',
+                                    left: 'auto',
+                                    transformOrigin: 'top right'
+                                },
+                                '& .MuiFormHelperText-root': {
+                                    paddingRight: '10px',
+                                    textAlign: 'right'
+                                }
+                            }} />
+                        <TextField
+                            fullWidth
+                            label="מספר טיסת חזור"
+                            name="returnFlightNo"
+                            value={formData.returnFlightNo}
+                            onChange={handleInputChange}
+                            margin="dense"
+                            sx={{
+                                width: '168px',
+                                '& .MuiOutlinedInput-root': {
+                                    direction: 'ltr',
+                                    borderRadius: '4px'
+                                },
+                                '& .MuiInputLabel-root': {
+                                    right: '24px',
+                                    left: 'auto',
+                                    transformOrigin: 'top right'
+                                },
+                                '& .MuiFormHelperText-root': {
+                                    paddingRight: '10px',
+                                    textAlign: 'right'
+                                }
+                            }} />
                     </Box>
                 )}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -97,13 +131,24 @@ export function PersonalPreferences() {
                             format='DD/MM/YYYY'
                             label="תאריך התחלה"
                             name="startingDate"
-                            minDate={dayjs('2025-06-01')}
+                            minDate={dayjs('2025-08-01')}
                             onChange={(newValue) => setStartingDate(newValue)}
                             sx={{
-                                marginTop: '12px',
                                 width: '350px',
-                                display: 'flex',
-                                direction: 'ltr'
+                                marginTop: '12px',
+                                '& .MuiOutlinedInput-root': {
+                                    direction: 'ltr',
+                                    borderRadius: '4px'
+                                },
+                                '& .MuiInputLabel-root': {
+                                    right: '54px',
+                                    left: 'auto',
+                                    transformOrigin: 'top right'
+                                },
+                                '& .MuiFormHelperText-root': {
+                                    paddingRight: '10px',
+                                    textAlign: 'right'
+                                }
                             }}
                         />
                     </DemoContainer>
@@ -112,19 +157,39 @@ export function PersonalPreferences() {
                     <DemoContainer components={['DatePicker']}>
                         <DatePicker
                             format='DD/MM/YYYY'
-                            minDate={dayjs('2025-06-01')}
+                            minDate={dayjs('2025-08-01')}
                             label="תאריך סיום"
                             name="endingDate"
                             onChange={(newValue) => setEndingDate(newValue)}
                             sx={{
-                                marginTop: '12px',
                                 width: '350px',
-                                display: 'flex',
-                                direction: 'ltr'
-                            }} />
+                                marginTop: '12px',
+                                '& .MuiOutlinedInput-root': {
+                                    direction: 'ltr',
+                                    borderRadius: '4px'
+                                },
+                                '& .MuiInputLabel-root': {
+                                    right: '54px',
+                                    left: 'auto',
+                                    transformOrigin: 'top right'
+                                },
+                                '& .MuiFormHelperText-root': {
+                                    paddingRight: '10px',
+                                    textAlign: 'right'
+                                }
+                            }}
+                        />
                     </DemoContainer>
                 </LocalizationProvider>
-                <FormControl fullWidth sx={{ marginTop: '12px', width: '350px' }}>
+                <FormControl fullWidth sx={{
+                    marginTop: '12px',
+                    width: '350px',
+                    '& .MuiInputLabel-root': {
+                        right: '24px',
+                        left: 'auto',
+                        transformOrigin: 'top right'
+                    }
+                }}>
                     <InputLabel id="roomType-label">סוג חדר</InputLabel>
                     <Select
                         fullWidth
@@ -133,30 +198,60 @@ export function PersonalPreferences() {
                         defaultValue={'dormitory'}
                         onChange={handleInputChange}
                         name="roomType"
-                        margin="dense"
-                        style={{ display: 'flex', direction: 'rtl', color: '#4b4f58' }}
+                        sx={{
+                            direction: 'rtl',
+                            color: '#4b4f58',
+                            '& .MuiSelect-select': {
+                                textAlign: 'right',
+                                direction: 'rtl'
+                            }
+                        }}
                     >
-                        <MenuItem value="dormitory">דורמיטורי (חדרים משותפים)</MenuItem>
-                        <MenuItem value="private-and-dormitory">שילוב של דורמיטורי וחדרים פרטיים</MenuItem>
-                        <MenuItem value="private-only">חדרים פרטיים בלבד</MenuItem>
+                        <MenuItem value="dormitory" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>דורמיטורי (חדרים משותפים)</MenuItem>
+                        <MenuItem value="private-and-dormitory" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>שילוב של דורמיטורי וחדרים פרטיים</MenuItem>
+                        <MenuItem value="private-only" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>חדרים פרטיים בלבד</MenuItem>
                     </Select>
                 </FormControl>
-                {(formData.roomType !== 'dormitory') && <FormControl fullWidth sx={{ marginTop: '12px', width: '350px' }}>
-                    <InputLabel id="bedType-label">סוג מיטה</InputLabel>
+                {(formData.roomType !== 'dormitory') && <FormControl fullWidth sx={{
+                    marginTop: '12px',
+                    width: '350px',
+                    '& .MuiInputLabel-root': {
+                        right: '44px',
+                        left: 'auto',
+                        transformOrigin: 'top right'
+                    }
+
+                }}>
+                    <InputLabel id="bedType-label" >סוג מיטה</InputLabel>
                     <Select
                         fullWidth
                         labelId="bedType-label"
                         value={formData.bedType}
+                        defaultValue={'dormitory'}
                         onChange={handleInputChange}
                         name="bedType"
-                        margin="dense"
-                        style={{ display: 'flex', direction: 'rtl' }}
+                        sx={{
+                            direction: 'rtl',
+                            color: '#4b4f58',
+                            '& .MuiSelect-select': {
+                                textAlign: 'right',
+                                direction: 'rtl'
+                            }
+                        }}
                     >
-                        <MenuItem value="double-bed">מיטה זוגית</MenuItem>
-                        <MenuItem value="twin-bed">מיטות נפרדות</MenuItem>
+                        <MenuItem value="double-bed" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>מיטה זוגית</MenuItem>
+                        <MenuItem value="twin-bed" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>מיטות נפרדות</MenuItem>
                     </Select>
                 </FormControl>}
-                <FormControl fullWidth sx={{ marginTop: '12px', width: '350px' }}>
+                <FormControl fullWidth sx={{
+                    marginTop: '12px',
+                    width: '350px',
+                    '& .MuiInputLabel-root': {
+                        right: '24px',
+                        left: 'auto',
+                        transformOrigin: 'top right'
+                    }
+                }}>
                     <InputLabel id="level-label">רמה</InputLabel>
                     <Select
                         fullWidth
@@ -168,10 +263,55 @@ export function PersonalPreferences() {
                         margin="dense"
                         style={{ display: 'flex', direction: 'rtl', color: '#4b4f58' }}
                     >
-                        <MenuItem value="Level-1">Level 1 - 130€ - 170€ לאדם ללילה</MenuItem>
-                        <MenuItem value="Level-2">Level 2 - 95€ - 130€ לאדם ללילה</MenuItem>
-                        <MenuItem value="Level-3">Level 3 - 60€ - 95€ לאדם ללילה</MenuItem>
+                        <MenuItem value="Level-1" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>
+                            Level 1 - לאדם ללילה 170€ - 130€
+                        </MenuItem>
+                        <MenuItem value="Level-2" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>
+                            Level 2 - לאדם ללילה 130€ - 95€
+                        </MenuItem>
+                        <MenuItem value="Level-3" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>
+                            Level 3 - לאדם ללילה 135€ - 60€
+                        </MenuItem>
                     </Select>
+                </FormControl>
+
+                <FormControl fullWidth sx={{
+                    marginTop: '12px',
+                    width: '350px',
+                    '& .MuiInputLabel-root': {
+                        right: '24px',
+                        left: 'auto',
+                        transformOrigin: 'top right'
+                    }
+                }}>
+                    <TextField
+                        fullWidth
+                        label="מייל Booking.com לשיוך ההזמנות (אופציונלי)"
+                        name="bookingEmail"
+                        type="email"
+                        value={formData.bookingEmail}
+                        onChange={handleInputChange}
+                        sx={{
+                            width: '350px',
+                            marginTop: '12px',
+                            '& .MuiOutlinedInput-root': {
+                                direction: 'ltr',
+                                borderRadius: '4px'
+                            },
+                            '& .MuiInputLabel-root': {
+                                right: '34px',
+                                left: 'auto',
+                                transformOrigin: 'top right'
+                            },
+                            '& .MuiFormHelperText-root': {
+                                paddingRight: '0px',
+                                textAlign: 'right'
+                            }
+                        }}
+                        placeholder="example@email.com"
+                        variant="outlined"
+                        margin="dense"
+                    />
                 </FormControl>
                 <TextField
                     inputProps={{ style: { textAlign: 'right', width: '400px' } }}
@@ -182,9 +322,27 @@ export function PersonalPreferences() {
                     name="remarks"
                     value={formData.remarks}
                     onChange={handleInputChange}
-                    sx={{ display: 'flex', direction: 'rtl', marginTop: '12px' }}
-                    margin="dense"
+                    sx={{
+                        width: '350px',
+                        marginTop: '12px',
+                        '& .MuiOutlinedInput-root': {
+                            direction: 'ltr',
+                            borderRadius: '4px'
+                        },
+                        '& .MuiInputLabel-root': {
+                            right: '24px',
+                            left: 'auto',
+                            transformOrigin: 'top right'
+                        },
+                        '& .MuiFormHelperText-root': {
+                            paddingRight: '0px',
+                            textAlign: 'right'
+                        }
+                    }} margin="dense"
                 />
+
+
+
                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
                     <Button
                         variant='contained'

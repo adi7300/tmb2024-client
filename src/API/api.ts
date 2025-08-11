@@ -13,6 +13,8 @@ export namespace FormApi {
                 bookingPreference: store.groupPreferences,
                 accList: store.preferredAccommodationList,
                 otherComments: store.generalComments,
+                bookingEmail: store.bookingEmail,
+                termsAccepted: store.termsAccepted,
             },
         })
             .then((response) => {

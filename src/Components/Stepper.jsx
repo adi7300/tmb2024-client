@@ -80,9 +80,10 @@ const StepperPage = observer(() => {
                     variant="contained"
                     color="primary"
                     disabled={
-                        store.tourLeader.name === undefined
+                        (store.tourLeader.name === undefined
                         && store.tourLeader.email === undefined
-                        && store.tourLeader.phone === undefined
+                        && store.tourLeader.phone === undefined)
+                        || (activeStep === steps.length - 1 && !store.termsAccepted)
                     }
                     onClick={handleNext}
                 >
