@@ -131,7 +131,7 @@ export function PersonalPreferences() {
                             format='DD/MM/YYYY'
                             label="תאריך התחלה"
                             name="startingDate"
-                            minDate={dayjs('2025-08-01')}
+                            minDate={dayjs('2026-06-01')}
                             onChange={(newValue) => setStartingDate(newValue)}
                             sx={{
                                 width: '350px',
@@ -157,7 +157,7 @@ export function PersonalPreferences() {
                     <DemoContainer components={['DatePicker']}>
                         <DatePicker
                             format='DD/MM/YYYY'
-                            minDate={dayjs('2025-08-01')}
+                            minDate={dayjs('2026-06-01')}
                             label="תאריך סיום"
                             name="endingDate"
                             onChange={(newValue) => setEndingDate(newValue)}
@@ -270,7 +270,7 @@ export function PersonalPreferences() {
                             Level 2 - לאדם ללילה 130€ - 95€
                         </MenuItem>
                         <MenuItem value="Level-3" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>
-                            Level 3 - לאדם ללילה 135€ - 60€
+                            Level 3 - לאדם ללילה 95€ - 60€
                         </MenuItem>
                     </Select>
                 </FormControl>
