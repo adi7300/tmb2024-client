@@ -263,13 +263,13 @@ export function PersonalPreferences() {
                         margin="dense"
                         style={{ display: 'flex', direction: 'rtl', color: '#4b4f58' }}
                     >
-                        <MenuItem value="Level-1" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>
+                        <MenuItem value="Level-1 (130€-170€)" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>
                             Level 1 - לאדם ללילה 170€ - 130€
                         </MenuItem>
-                        <MenuItem value="Level-2" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>
+                        <MenuItem value="Level-2 (95€-130€)" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>
                             Level 2 - לאדם ללילה 130€ - 95€
                         </MenuItem>
-                        <MenuItem value="Level-3" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>
+                        <MenuItem value="Level-3 (60€-95€)" sx={{ direction: 'rtl', justifyContent: 'flex-start' }}>
                             Level 3 - לאדם ללילה 95€ - 60€
                         </MenuItem>
                     </Select>

@@ -39,18 +39,14 @@ const Summary = observer(() => {
                     name="comments"
                     value={store.generalComments}
                     onChange={handleInputChange}
-                    sx={{
-                        '& .MuiOutlinedInput-root': {
-                            direction: 'rtl',
-                            borderRadius: '8px'
+                    InputLabelProps={{
+                        shrink: true,
+                        sx: {
+                            right: '-30px',
+                            transformOrigin: 'top right',
                         },
-                        '& .MuiInputLabel-root': {
-                            right: '34px',
-                            left: 'auto',
-                            transformOrigin: 'top right'
-                        }
                     }}
-                    variant="outlined"
+                    variant="filled"
                 />
             </Box>
 
