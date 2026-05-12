@@ -79,19 +79,21 @@ export const AccommodationPreferences = observer(() => {
         })
     );
 
+    const editingAccommodation = store.editingAccommodation;
+
     useEffect(() => {
-        if (store.editingAccommodation) {
+        if (editingAccommodation) {
             setFormData({
-                nightNo: store.editingAccommodation.nightNo,
-                location: store.editingAccommodation.location,
-                firstOption: store.editingAccommodation.firstOption,
-                secondOption: store.editingAccommodation.secondOption,
-                thirdOption: store.editingAccommodation.thirdOption,
-                remarks: store.editingAccommodation.remarks
+                nightNo: editingAccommodation.nightNo,
+                location: editingAccommodation.location,
+                firstOption: editingAccommodation.firstOption,
+                secondOption: editingAccommodation.secondOption,
+                thirdOption: editingAccommodation.thirdOption,
+                remarks: editingAccommodation.remarks
             });
             setOpen(true);
         }
-    }, [store.editingAccommodation]);
+    }, [editingAccommodation]);
 
     const handleClickOpen = () => {
         setOpen(true);
